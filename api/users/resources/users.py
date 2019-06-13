@@ -54,9 +54,5 @@ class User(Resource):
         print(args)
         return {}
 
-    @marshal_with(user_fields)
-    def get(self, id):
-        args = post_parser.parse_args()
-        # user = fetch_user(id)
-        print(args)
-        return {}
+    def get(self):
+        print('ok')

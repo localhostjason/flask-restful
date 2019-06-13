@@ -18,6 +18,9 @@ def create_app():
     db.init_app(app)
 
     from .auth import api_auth as auth_blueprint
-    app.register_blueprint(auth_blueprint, url_prefix='/auth')
+    app.register_blueprint(auth_blueprint, url_prefix='/api')
+
+    from .users import api_user as user_blueprint
+    app.register_blueprint(user_blueprint, url_prefix='/api')
 
     return app
