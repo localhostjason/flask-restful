@@ -7,7 +7,7 @@ from .resources.users import User
 
 api_user = Blueprint('users', __name__)
 
-api.add_resource(User, '/user')
+api.add_resource(User, '/user', endpoint='user')
 
 api.init_app(api_user)
 

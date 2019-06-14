@@ -11,7 +11,7 @@ api = Api()
 
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder=Config.STATIC_FOLDER, static_url_path='')
     app.config.from_object(Config)
 
     Config.init_app(app)

@@ -48,6 +48,9 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
 
+    MY_ROOT_DIR = MY_ROOT_DIR
+    STATIC_FOLDER = os.path.join(MY_ROOT_DIR, 'static')
+
     @staticmethod
     def init_app(app):
         pass

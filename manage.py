@@ -4,6 +4,7 @@ from flask_migrate import Migrate, MigrateCommand
 
 from api import app
 from api.models import *
+from api.static_file import *
 
 from init_data import insert_admin
 
