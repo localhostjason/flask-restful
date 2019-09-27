@@ -1,7 +1,7 @@
 from flask import Blueprint
-from ..app import api
-from .resources.login import LoginApi
-from .resources.logout import LogOutApi
+from api.app import api
+from .login import LoginApi
+from .logout import LogOutApi
 
 api_auth = Blueprint('auth', __name__)
 

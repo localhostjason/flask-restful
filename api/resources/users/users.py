@@ -1,4 +1,5 @@
 from flask_restful import fields, marshal_with, reqparse, Resource
+from api.models import User as UM
 
 
 def valid_email(str):
@@ -16,17 +17,17 @@ def email(email_str):
 post_parser = reqparse.RequestParser()
 post_parser.add_argument(
     'username', dest='username',
-    location='form', required=True,
+    location='json', required=True,
     help='The user\'s username',
 )
 post_parser.add_argument(
     'email', dest='email',
-    type=email, location='form',
+    type=email, location='json',
     required=True, help='The user\'s email',
 )
 post_parser.add_argument(
     'user_priority', dest='user_priority',
-    type=int, location='form',
+    type=int, location='json',
     default=1, choices=range(5), help='The user\'s priority',
 )
 
@@ -44,15 +45,22 @@ user_fields = {
     }),
 }
 
+user_f = {
+    'username': fields.String,
+    'uri': fields.Url()
+}
+
 
 class User(Resource):
 
-    @marshal_with(user_fields)
+    @marshal_with(user_f)
     def post(self):
         args = post_parser.parse_args()
         # user = create_user(args.username, args.email, args.user_priority)
         print(args)
-        return {}
+        user = UM.query.first()
+        return user
 
+    @marshal_with(user_f)
     def get(self):
-        print('ok')
+        return {}

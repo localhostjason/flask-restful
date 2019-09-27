@@ -3,7 +3,7 @@ from api.app import api
 from api.auth_token import token_auth
 from api.errors import *
 
-from .resources.users import User
+from .users import User
 
 api_user = Blueprint('users', __name__)
 
