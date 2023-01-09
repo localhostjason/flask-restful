@@ -1,28 +1,16 @@
-#!/usr/bin/env python
-from flask_script import Manager, Shell, Command
-from flask_migrate import Migrate, MigrateCommand
+from flask import Blueprint
+
 import os
 import time
 
-from api import app
-from api.models import *
-from api.static_file import *
-
-from init_data import insert_admin
-
-manager = Manager(app)
-migrate = Migrate(app, db)
-
-
-def make_shell_context():
-    return dict(app=app, db=db)
+server_cmd = Blueprint('server', __name__)
 
 
 # start | stop 只适合linux
-class ServerCommand(Command):
+class ServerCommand(object):
     @staticmethod
     def _get_pid():
-        pid_file = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'gunicorn.pid')
+        pid_file = os.path.join(os.path.abspath(os.path.dirname(__file__)), '../gunicorn.pid')
         try:
             with open(pid_file, 'r') as f:
                 return int(f.read())
@@ -50,7 +38,7 @@ class Start(ServerCommand):
     def run(self):
         if self.get_status():
             return
-        cmd = 'gunicorn -c gun.py manage:app --daemon'
+        cmd = 'gunicorn -c gun.py main:app --daemon'
         os.system(cmd)
 
 
@@ -78,24 +66,11 @@ class Stop(ServerCommand):
             print('web server failed to stop')
 
 
-manager.add_command("shell", Shell(make_context=make_shell_context))
-manager.add_command('db', MigrateCommand)
-manager.add_command('start', Start())
-manager.add_command('stop', Stop())
+@server_cmd.cli.command("start")
+def start_server():
+    Start().run()
 
 
-@manager.command
-def update_db():
-    from flask_migrate import upgrade, migrate
-
-    migrate()
-    upgrade()
-
-
-@manager.command
-def deploy():
-    insert_admin()
-
-
-if __name__ == '__main__':
-    manager.run()
+@server_cmd.cli.command("stop")
+def start_server():
+    Stop().run()
